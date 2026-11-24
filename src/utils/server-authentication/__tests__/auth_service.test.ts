@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { PiholeAuthService, isExpiring } from "../auth_service";
+import { FetchFn } from "../../utils.types";
 
 describe("piholeAuth", () => {
   describe("isExpiring", () => {
@@ -67,7 +68,7 @@ describe("piholeAuth", () => {
         }),
       });
 
-      service = new PiholeAuthService(hosts, fetchStub as unknown as any);
+      service = new PiholeAuthService(hosts, fetchStub as FetchFn);
     });
 
     it.each([
