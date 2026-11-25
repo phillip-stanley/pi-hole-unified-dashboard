@@ -48,7 +48,7 @@ describe("piholeAuth", () => {
   });
 
   describe("piholeAuth.getSession", () => {
-    const hosts = { holly: "http://holly.test", queeg: "http://queeg.test" };
+    const hosts = { hostone: "http://hostone.test", hosttwo: "http://hosttwo.test" };
     let service: PiholeAuthService;
     let fetchStub: ReturnType<typeof vi.fn>;
 
@@ -72,8 +72,8 @@ describe("piholeAuth", () => {
     });
 
     it.each([
-      ["holly", "holly", 1],
-      ["holly", "queeg", 2],
+      ["hostone", "hostone", 1],
+      ["hostone", "hosttwo", 2],
     ])("it calls fetch the expected number of times when multiple getSession calls are made", async (
       hostnameOne,
       hostnameTwo,
@@ -87,7 +87,7 @@ describe("piholeAuth", () => {
     })
 
     it("does not call fetch 3 times when cache is empty and 3 calls are made to getSession", async () => {
-      const noneCachedHostname = "holly";
+      const noneCachedHostname = "hostone";
       await Promise.all([
         service.getSession(noneCachedHostname),
         service.getSession(noneCachedHostname),
@@ -97,12 +97,12 @@ describe("piholeAuth", () => {
     })
 
     it("fetches a new session when none is cached", async () => {
-      const noneCachedHostname = "holly";
+      const noneCachedHostname = "hostone";
       const session = await service.getSession(noneCachedHostname);
 
       expect(fetchStub).toHaveBeenCalled();
       expect(fetchStub).toHaveBeenCalledWith(
-        "http://holly.test/api/auth",
+        "http://hostone.test/api/auth",
         expect.objectContaining({ method: "POST" }),
       );
 
@@ -112,7 +112,7 @@ describe("piholeAuth", () => {
     });
 
     it("returns the cached session when its still valid", async () => {
-      const mockHostname = "holly";
+      const mockHostname = "hostone";
 
       const session = await service.getSession(mockHostname);
       await service.getSession(mockHostname);
@@ -139,7 +139,7 @@ describe("piholeAuth", () => {
           took: 1002.1,
         }),
       });
-      const mockHostname = "holly";
+      const mockHostname = "hostone";
 
       await service.getSession(mockHostname);
       await service.getSession(mockHostname);
@@ -162,7 +162,7 @@ describe("piholeAuth", () => {
           took: 1002.1,
         }),
       });
-      const mockHostname = "holly";
+      const mockHostname = "hostone";
 
       await expect(async () => await service.getSession(mockHostname)).rejects.toThrow()
       expect(fetchStub).toHaveBeenCalledTimes(1)
@@ -183,7 +183,7 @@ describe("piholeAuth", () => {
           took: 1002.1,
         }),
       });
-      const mockHostname = "holly";
+      const mockHostname = "hostone";
 
       await expect(async () => await service.getSession(mockHostname)).rejects.toThrow()
     })

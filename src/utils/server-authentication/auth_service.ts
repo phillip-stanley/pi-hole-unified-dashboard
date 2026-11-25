@@ -102,6 +102,7 @@ class PiholeAuthService {
    * @param hostname - string: the device hostname
    */
   async getSession(hostname: string): Promise<session> {
+    console.log("testing");
     const cached = this.sessions[hostname];
 
     if (cached && !isExpiring(cached, new Date(), AUTH_REFRESH_LEAD_TIME)) {
